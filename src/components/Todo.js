@@ -1,31 +1,35 @@
 import React, { useState, useEffect } from "react";
-import imag from "../images/8136021.jpg";
-import { MdAddCircle } from "react-icons/md";
-import { MdDelete } from "react-icons/md";
-
+import { MdAddCircle, MdDelete } from "react-icons/md";
 import { Toaster, toast } from "react-hot-toast";
+
 const Todo = () => {
+  // State for storing todos
   const [todos, setTodos] = useState([]);
+  // State for storing input value
   const [input, setInput] = useState("");
+  // State for storing completed todos
   const [doneTodos, setDoneTodos] = useState({});
 
+  // Load todos and doneTodos from localStorage on component mount
   useEffect(() => {
-    // Load todos from localStorage on component mount
     const savedTodos = localStorage.getItem("todos");
     if (savedTodos) {
       setTodos(JSON.parse(savedTodos));
     }
+
+    const savedDoneTodos = localStorage.getItem("doneTodos");
+    if (savedDoneTodos) {
+      setDoneTodos(JSON.parse(savedDoneTodos));
+    }
   }, []);
 
+  // Save todos and doneTodos to localStorage whenever they change
   useEffect(() => {
-    // Save todos to localStorage whenever it changes
     localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
+    localStorage.setItem("doneTodos", JSON.stringify(doneTodos));
+  }, [todos, doneTodos]);
 
-  const handleKeyPress = (e) => {
-    addTask();
-  };
-  // function to add a todo
+  // Function to add a new todo
   const addTask = () => {
     toast.dismiss();
     if (input.trim() !== "") {
@@ -36,7 +40,8 @@ const Todo = () => {
       setInput("");
     }
   };
-  // function to delete a todo
+
+  // Function to delete a todo
   const deleteTodo = (id) => {
     toast.dismiss();
     setTodos(todos.filter((todo) => todo.id !== id));
@@ -49,7 +54,7 @@ const Todo = () => {
     <>
       <Toaster position="top-center" />
       <div
-        className="container-fluid p-0 "
+        className="container-fluid p-0"
         style={{
           display: "flex",
           alignItems: "center",
@@ -61,34 +66,24 @@ const Todo = () => {
         <div
           style={{ display: "flex", backgroundColor: "#190482", width: "100%" }}
         >
-          <h1 style={{ color: "white", padding: "1rem" }}>Toodiify </h1>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            zIndex: "-3",
-            position: "absolute",
-          }}
-        >
-          {/* <img style={{ height: "100vh", width: "100%" }} src={imag} alt="" /> */}
+          <h1 style={{ color: "white", padding: "1rem" }}>Toodiify</h1>
         </div>
         <div
           className="d-flex p-3 w-100"
           style={{
-            backgroundColor: "",
+            gap: "1rem",
             justifyContent: "center",
             alignItems: "center",
-            gap: "1rem",
           }}
         >
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="  Enter Your TODO"
+            placeholder="Enter Your TODO"
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                handleKeyPress();
+                addTask();
               }
             }}
             style={{
@@ -113,18 +108,14 @@ const Todo = () => {
         <div
           className="p-3 w-100 h-100"
           style={{
-            backgroundColor: "",
-            justifyContent: "center",
-            alignItems: "center",
             overflowY: "auto",
-            scrollbarWidth: "none",
             textAlign: "justify",
             overflowX: "hidden",
-            textJustify: "inter-word",
           }}
         >
           {todos.map((todo) => (
             <div
+              key={todo.id}
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -134,16 +125,16 @@ const Todo = () => {
               }}
             >
               <input
-                class="form-check-input"
+                className="form-check-input"
                 type="checkbox"
                 value=""
-                id="flexCheckDefault"
                 style={{
                   width: "2rem",
                   height: "2rem",
                   padding: "1rem",
                   margin: "0 .5rem",
                 }}
+                checked={doneTodos[todo.id] || false}
                 onChange={(e) => {
                   toast.dismiss();
                   setDoneTodos({
@@ -156,9 +147,8 @@ const Todo = () => {
                 }}
               />
               <div
-                className="container d-flex "
+                className="container d-flex"
                 style={{
-                  //   gap: "2rem",
                   backgroundColor: doneTodos[todo.id] ? "#8DECB4" : "#190482",
                   color: doneTodos[todo.id] ? "black" : "white",
                   width: "100%",
