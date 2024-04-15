@@ -25,7 +25,11 @@ Welcome to the Todo app! This is a simple TODO application to help you manage yo
 
 ## Screenshots
 
-[Include screenshots of your app here]
+![PhoneView](https://github.com/somu-dey/TODO-App/assets/109870389/853285be-7b04-4b59-a25c-e49bb60d1e30)
+![TabView](https://github.com/somu-dey/TODO-App/assets/109870389/49490629-ab45-4495-9335-f4f00cdc96d6)
+![DesktopView](https://github.com/somu-dey/TODO-App/assets/109870389/32e4262c-c0ce-4561-85ec-23eca740dfd7)
+
+
 
 ## Feedback
 
